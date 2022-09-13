@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
               backgroundColor: Colors.deepPurple,
               leading: Container(),
@@ -156,9 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       .pushReplacement(
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          HomeScreen(
-                                                        user,
-                                                      ),
+                                                          HomeScreen(user),
                                                     ),
                                                   );
                                                 }
