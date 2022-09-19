@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
 import 'package:flutter_auth/ui/home_screen.dart';
+import 'package:flutter_auth/ui/register_screen.dart';
 
 import '../utils/appColor.dart';
 import '../utils/constant.dart';
@@ -173,6 +174,25 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(
           height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('I have no account'),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterScreen()),
+                );
+              },
+              child: const Text(
+                'Sign Up',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
         Row(children: [
           Expanded(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
+import 'package:flutter_auth/ui/loginscreen.dart';
 import 'package:flutter_auth/utils/appColor.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,6 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
           TextButton(
             onPressed: () async {
               await _auth.userSignOut();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
             },
             child: const Text(
               "Sign Out",
