@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
-import 'package:flutter_auth/ui/home_screen.dart';
-import 'package:flutter_auth/ui/register_screen.dart';
+import 'package:flutter_auth/ui/screens/home_screen.dart';
+import 'package:flutter_auth/ui/screens/register_screen.dart';
+import 'package:flutter_auth/ui/widget/common/app_text_field.dart';
+import 'package:flutter_auth/ui/widget/common/app_text_view.dart';
+import 'package:flutter_auth/ui/widget/common/common_widget.dart';
 
-import '../utils/appColor.dart';
-import '../utils/constant.dart';
+import '../../utils/app_color.dart';
+import '../../utils/constant.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // login UI
             loginUi(context),
+            // account login
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -42,9 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Image.asset('assets/images/ic_google.png', width: 45),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
                 Container(
                   decoration: BoxDecoration(
                     color: AppColor.bgWhite,
@@ -55,9 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(5),
                     child: Image.asset('assets/images/ic_apple.png', width: 45),
                   ),
-                ),
-                const SizedBox(
-                  width: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -70,9 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     child:
                         Image.asset('assets/images/ic_facebook.png', width: 45),
                   ),
-                ),
-                const SizedBox(
-                  width: 20,
                 ),
                 InkWell(
                   child: Container(
@@ -102,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -112,111 +110,84 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget loginUi(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'Welcome',
-          style: TextStyle(
-              fontSize: 25, fontWeight: FontWeight.w500, color: AppColor.black),
+        appTextView(
+          isBold: true,
+          size: 20,
+          name: 'Welcome',
         ),
         const SizedBox(
           height: 50,
         ),
-        Container(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          width: screenWidth(context) - 50,
-          height: 50,
-          decoration: BoxDecoration(
-              color: AppColor.white, borderRadius: BorderRadius.circular(15)),
-          child: const TextField(
-            //controller: passwordController,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'User Name',
-                hintStyle: TextStyle(color: Colors.black26)),
-          ),
+        AppTextField(
+          controller: userNameController,
+          hintText: 'UserName',
+          inputAction: TextInputAction.next,
+          inputType: TextInputType.name,
         ),
-        const SizedBox(
-          height: 15,
+        dividerH(),
+        AppTextField(
+          controller: passwordController,
+          hintText: 'password',
+          inputAction: TextInputAction.done,
+          inputType: TextInputType.visiblePassword,
         ),
-        Container(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          width: screenWidth(context) - 50,
-          height: 50,
-          decoration: BoxDecoration(
-              color: AppColor.white, borderRadius: BorderRadius.circular(15)),
-          child: const TextField(
-            //controller: passwordController,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Password',
-                hintStyle: TextStyle(color: Colors.black26)),
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
+        dividerH(),
         SizedBox(
-          width: screenWidth(context) - 50,
+          width: screenWidth(context) - 20,
           height: 50,
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: AppColor.lightRed,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )),
-              onPressed: () {},
-              child: const Text(
-                'Sign In',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: AppColor.white),
-              )),
+            style: ElevatedButton.styleFrom(
+                primary: AppColor.lightRed,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                )),
+            onPressed: () {},
+            child: appTextView(
+                name: 'Login', color: AppColor.white, isBold: true, size: 16),
+          ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        dividerH(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('I have no account'),
+            appTextView(name: ' I have no account'),
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const RegisterScreen()),
+                    builder: (context) => const RegisterScreen(),
+                  ),
                 );
               },
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              child: appTextView(
+                  name: 'Sign Up', isBold: true, color: AppColor.lightBlue),
             ),
           ],
         ),
-        Row(children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(right: 10, left: 25),
-              child: const Divider(
-                thickness: 0.2,
-                color: AppColor.black,
-              ),
-            ),
-          ),
-          const Text('or continue with'),
-          Expanded(
-            child: Container(
-                margin: const EdgeInsets.only(right: 25, left: 10),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(right: 10, left: 25),
                 child: const Divider(
                   thickness: 0.2,
                   color: AppColor.black,
-                )),
-          ),
-        ]),
-        const SizedBox(
-          height: 20,
+                ),
+              ),
+            ),
+            appTextView(name: 'or continue with'),
+            Expanded(
+              child: Container(
+                  margin: const EdgeInsets.only(right: 25, left: 10),
+                  child: const Divider(
+                    thickness: 0.2,
+                    color: AppColor.black,
+                  )),
+            ),
+          ],
         ),
+        dividerH(),
       ],
     );
   }

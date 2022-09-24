@@ -12,10 +12,15 @@ class AuthService {
 
   //auth change  user stream
 
-  Stream<UserList?> get user {
-    return _auth
-        .authStateChanges()
-        .map((User? user) => _userFromFirebase(user!));
+  Stream<UserList?>? get user {
+    try {
+      return _auth
+          .authStateChanges()
+          .map((User? user) => _userFromFirebase(user!));
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
   }
 
   //signIn anon
@@ -37,7 +42,7 @@ class AuthService {
       String name, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password);
       User? user = result.user;
       return _userFromFirebase(user!);
     } catch (e) {
