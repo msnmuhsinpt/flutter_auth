@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import '../../../utils/app_color.dart';
 
 Widget appTextView(
-    {String name = "",
-      double size = 15,
-      int maxLines = 1,
-      Color color = AppColor.black,
-      bool isBold = false}) {
+    {String name = '',
+    double size = 15,
+    int maxLines = 1,
+    Color color = AppColor.black,
+    bool isBold = false}) {
   return Text(
     name,
     style: TextStyle(

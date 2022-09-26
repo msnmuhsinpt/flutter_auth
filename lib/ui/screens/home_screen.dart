@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/service/auth.dart';
 import 'package:flutter_auth/ui/widget/common/app_text_view.dart';
 import 'package:flutter_auth/utils/app_color.dart';
 
@@ -11,21 +11,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AuthService _auth = AuthService();
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Container(),
-        title: appTextView(name: 'Home', isBold: true, size: 18,color: AppColor.white),
+        title: appTextView(
+            name: 'Home', isBold: true, size: 18, color: AppColor.white),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () {
               sighOut();
             },
-            child: appTextView(name: 'Sign Out', size: 16,color: AppColor.white),
+            child:
+                appTextView(name: 'Sign Out', size: 16, color: AppColor.white),
           ),
         ],
         backgroundColor: AppColor.lightRed,
@@ -34,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            appTextView(name: 'Appziac Technologies', isBold: true),
+            appTextView(name: user!.email.toString(), isBold: true),
+            appTextView(
+              name: user!.uid.toString(),
+            ),
           ],
         ),
       ),
@@ -42,6 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void sighOut() {
-    _auth.userSignOut();
+    FirebaseAuth.instance.signOut();
   }
 }

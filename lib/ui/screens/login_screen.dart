@@ -1,193 +1,121 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
-import 'package:flutter_auth/ui/screens/home_screen.dart';
-import 'package:flutter_auth/ui/screens/register_screen.dart';
+import 'package:flutter_auth/ui/screens/forgot_screen.dart';
 import 'package:flutter_auth/ui/widget/common/app_text_field.dart';
 import 'package:flutter_auth/ui/widget/common/app_text_view.dart';
 import 'package:flutter_auth/ui/widget/common/common_widget.dart';
+import 'package:flutter_auth/utils/app_color.dart';
+import 'package:flutter_auth/utils/constant.dart';
 
-import '../../utils/app_color.dart';
-import '../../utils/constant.dart';
+class LoginWidget extends StatefulWidget {
+  final VoidCallback onClickedSignUp;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginWidget(this.onClickedSignUp, {Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginWidget> createState() => _LoginWidgetState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final AuthService _auth = AuthService();
-  TextEditingController userNameController = TextEditingController();
+class _LoginWidgetState extends State<LoginWidget> {
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        width: screenWidth(context),
-        color: AppColor.bgWhite,
+      body: Padding(
+        padding: commonPaddingLR,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // login UI
-            loginUi(context),
-            // account login
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.bgWhite,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(width: 1.5, color: AppColor.white),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child:
-                        Image.asset('assets/images/ic_google.png', width: 45),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.bgWhite,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(width: 1.5, color: AppColor.white),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Image.asset('assets/images/ic_apple.png', width: 45),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.bgWhite,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(width: 1.5, color: AppColor.white),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child:
-                        Image.asset('assets/images/ic_facebook.png', width: 45),
-                  ),
-                ),
-                InkWell(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.bgWhite,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(width: 1.5, color: AppColor.white),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(Icons.tag_faces_rounded, size: 45),
-                    ),
-                  ),
-                  onTap: () async {
-                    dynamic result = await _auth.signInAnon();
-                    if (result == null) {
-                      print('error sign in');
-                    } else {
-                      print('sign in');
-                      print(result.uId);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
+            loginUi(),
           ],
         ),
       ),
     );
   }
 
-  Widget loginUi(BuildContext context) {
+  //login UI
+  Widget loginUi() {
     return Column(
       children: [
         appTextView(
-          isBold: true,
+          name: 'Login',
           size: 20,
-          name: 'Welcome',
+          isBold: true,
         ),
-        const SizedBox(
-          height: 50,
-        ),
+        const SizedBox(height: 50),
         AppTextField(
-          controller: userNameController,
-          hintText: 'UserName',
+          controller: emailController,
+          hintText: 'Email',
+          inputType: TextInputType.emailAddress,
           inputAction: TextInputAction.next,
-          inputType: TextInputType.name,
         ),
-        dividerH(),
+        dividerSH(),
         AppTextField(
           controller: passwordController,
-          hintText: 'password',
-          inputAction: TextInputAction.done,
+          hintText: 'Password',
           inputType: TextInputType.visiblePassword,
+          inputAction: TextInputAction.done,
         ),
-        dividerH(),
+        //forgot button
+        Align(
+          alignment: Alignment.topRight,
+          child: TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ForgotPage(),),
+              );
+            },
+            child:
+                appTextView(name: 'Forgot Password', color: AppColor.lightBlue),
+          ),
+        ),
+        dividerSH(),
         SizedBox(
           width: screenWidth(context) - 20,
           height: 50,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: AppColor.lightRed,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
-            onPressed: () {},
-            child: appTextView(
-                name: 'Login', color: AppColor.white, isBold: true, size: 16),
-          ),
-        ),
-        dividerH(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            appTextView(name: ' I have no account'),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterScreen(),
-                  ),
-                );
-              },
-              child: appTextView(
-                  name: 'Sign Up', isBold: true, color: AppColor.lightBlue),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(right: 10, left: 25),
-                child: const Divider(
-                  thickness: 0.2,
-                  color: AppColor.black,
-                ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
             ),
-            appTextView(name: 'or continue with'),
-            Expanded(
-              child: Container(
-                  margin: const EdgeInsets.only(right: 25, left: 10),
-                  child: const Divider(
-                    thickness: 0.2,
-                    color: AppColor.black,
-                  )),
-            ),
-          ],
+            child: appTextView(
+                name: 'Login', isBold: true, color: AppColor.white, size: 16),
+            onPressed: () {
+              AuthService().sign(
+                emailController.text.toString(),
+                passwordController.text.toString(),
+              );
+            },
+          ),
         ),
-        dividerH(),
+        dividerSH(),
+        RichText(
+          text: TextSpan(
+              text: 'Don' 't have an account?  ',
+              style: const TextStyle(color: AppColor.black),
+              children: [
+                TextSpan(
+                  //multiple tap
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = widget.onClickedSignUp,
+                  text: 'Sign Up',
+                  style: const TextStyle(
+                      color: AppColor.lightBlue, fontWeight: FontWeight.bold),
+                )
+              ]),
+        )
       ],
     );
   }

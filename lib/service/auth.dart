@@ -1,10 +1,55 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_auth/model/user_list.dart';
+import 'package:flutter_auth/ui/widget/common/snack_bar.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //create user object firebase
+//sign // login
+  Future sign(
+    String email,
+    String password,
+  ) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+      // snack bar
+      Utils.showSnackBar(e.message);
+    }
+  }
+
+  //sign Up // register
+  Future register(
+    String email,
+    String password,
+  ) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+      //snack bar
+      Utils.showSnackBar(e.message);
+    }
+  }
+
+  // Reset password
+  Future resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(
+        email: email.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+      Utils.showSnackBar(e.message);
+    }
+  }
+/*  //create user object firebase
 
   UserList? _userFromFirebase(User user) {
     return user.isAnonymous ? UserList(user.uid) : null;
@@ -60,5 +105,5 @@ class AuthService {
       print(e.toString());
       return null;
     }
-  }
+  }*/
 }
