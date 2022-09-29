@@ -1,14 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:flutter_auth/ui/widget/common/snack_bar.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 //sign // login
-  Future sign(
-    String email,
-    String password,
-  ) async {
+  Future sign(String email, String password, BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     try {
       await _auth.signInWithEmailAndPassword(
         email: email.trim(),
@@ -19,13 +25,23 @@ class AuthService {
       // snack bar
       Utils.showSnackBar(e.message);
     }
+    //navigator not working
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   //sign Up // register
   Future register(
     String email,
     String password,
+    BuildContext context,
   ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
@@ -36,18 +52,30 @@ class AuthService {
       //snack bar
       Utils.showSnackBar(e.message);
     }
+    //navigator not working
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
   // Reset password
-  Future resetPassword(String email) async {
+  Future resetPassword(String email, BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     try {
       await _auth.sendPasswordResetEmail(
         email: email.trim(),
       );
+      Utils.showSnackBar('Password Rest Email Sent');
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       Utils.showSnackBar(e.message);
     }
+    //navigator not working
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 /*  //create user object firebase
 

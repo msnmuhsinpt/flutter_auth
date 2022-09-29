@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/utils/app_color.dart';
 import 'package:flutter_auth/utils/constant.dart';
 
 class AppTextField extends StatelessWidget {
@@ -7,12 +6,14 @@ class AppTextField extends StatelessWidget {
   final inputType;
   final inputAction;
   final controller;
+  final Color color;
 
   AppTextField({
     required this.controller,
     required this.hintText,
     this.inputType,
     this.inputAction,
+    required this.color,
   });
 
   @override
@@ -26,7 +27,7 @@ class AppTextField extends StatelessWidget {
         maxLength: 25,
         decoration: InputDecoration(
           filled: true,
-          fillColor: AppColor.white,
+          fillColor: color,
           //don't show limit
           counterText: "",
           labelText: hintText,
@@ -34,13 +35,11 @@ class AppTextField extends StatelessWidget {
           // hintText: hintText,
           contentPadding: const EdgeInsets.all(10),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(width: 1, color: AppColor.hash),
-          ),
+              borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(width: 0.2),),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(width: 1, color: AppColor.hash),
-          ),
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(width: 0.2),),
         ),
       ),
     );

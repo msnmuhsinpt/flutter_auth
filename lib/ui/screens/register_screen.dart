@@ -121,6 +121,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     AuthService().register(
                     emailController.text.toString(),
                     passwordController.text.toString(),
+                      context
                   );
                 },
               ),

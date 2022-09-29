@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+
+//image
+String icBg = 'assets/images/bgImage.jpg';
+String icGoogle = 'assets/images/ic_google.png';
+String icApple = 'assets/images/ic_apple.png';
+String icAnon = 'assets/images/ic_guest.png';
+
 //screen size
 double screenHeight(context) {
   return MediaQuery.of(context).size.height;
 }
+
 double screenWidth(context) {
   return MediaQuery.of(context).size.width;
 }

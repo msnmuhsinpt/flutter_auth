@@ -12,13 +12,14 @@ Future<void> main() async {
 
   runApp(const MyApp());
 }
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final navigatorKey = GlobalKey<NavigatorState>();
+
     return MaterialApp(
       navigatorKey: navigatorKey,
       scaffoldMessengerKey: Utils.messengerKey,

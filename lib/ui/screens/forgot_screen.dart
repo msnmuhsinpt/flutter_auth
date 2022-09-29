@@ -76,9 +76,8 @@ class _ForgotPageState extends State<ForgotPage> {
                     color: AppColor.white,
                     size: 16),
                 onPressed: () {
-                  AuthService().resetPassword(
-                    emailController.text.toString(),
-                  );
+                  AuthService()
+                      .resetPassword(emailController.text.toString(), context);
                 },
               ),
             ),

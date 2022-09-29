@@ -31,12 +31,32 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: commonPaddingLR,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      resizeToAvoidBottomInset: true,
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(icBg), fit: BoxFit.cover),
+        ),
+        child: Stack(
           children: [
-            loginUi(),
+            Positioned(
+              top: 180,
+              height: screenHeight(context) - 180,
+              width: screenWidth(context),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColor.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: commonPaddingLR,
+                  child: loginUi(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -46,16 +66,24 @@ class _LoginWidgetState extends State<LoginWidget> {
   //login UI
   Widget loginUi() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        dividerH(),
         appTextView(
-          name: 'Login',
-          size: 20,
-          isBold: true,
-        ),
-        const SizedBox(height: 50),
+            name: 'Welcome Back',
+            color: AppColor.green,
+            size: 30,
+            isBold: true),
+        appTextView(
+            name: 'Login to your account',
+            color: AppColor.green,
+            size: 15,
+            isBold: true),
+        dividerH(),
         AppTextField(
           controller: emailController,
           hintText: 'Email',
+          color: AppColor.lightGreen,
           inputType: TextInputType.emailAddress,
           inputAction: TextInputAction.next,
         ),
@@ -63,6 +91,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         AppTextField(
           controller: passwordController,
           hintText: 'Password',
+          color: AppColor.lightGreen,
           inputType: TextInputType.visiblePassword,
           inputAction: TextInputAction.done,
         ),
@@ -73,19 +102,20 @@ class _LoginWidgetState extends State<LoginWidget> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ForgotPage(),),
+                MaterialPageRoute(
+                  builder: (context) => const ForgotPage(),
+                ),
               );
             },
-            child:
-                appTextView(name: 'Forgot Password', color: AppColor.lightBlue),
+            child: appTextView(name: 'Forgot Password', color: AppColor.green),
           ),
         ),
-        dividerSH(),
         SizedBox(
           width: screenWidth(context) - 20,
-          height: 50,
+          height: 40,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              primary: AppColor.green,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -93,12 +123,83 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: appTextView(
                 name: 'Login', isBold: true, color: AppColor.white, size: 16),
             onPressed: () {
-              AuthService().sign(
-                emailController.text.toString(),
-                passwordController.text.toString(),
-              );
+              AuthService().sign(emailController.text.toString(),
+                  passwordController.text.toString(), context);
             },
           ),
+        ),
+        dividerSH(),
+        Row(children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.only(right: 10, left: 25),
+              child: const Divider(
+                thickness: 0.2,
+                color: AppColor.black,
+              ),
+            ),
+          ),
+          const Text('or continue with'),
+          Expanded(
+            child: Container(
+                margin: const EdgeInsets.only(right: 25, left: 10),
+                child: const Divider(
+                  thickness: 0.2,
+                  color: AppColor.black,
+                )),
+          ),
+        ]),
+        dividerSH(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              width: 50,
+              child: Card(
+                color: AppColor.lightGreen,
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: const BorderSide(width: 0.2, color: AppColor.green),
+                ),
+                child: Padding(
+                  padding: commonPaddingAll5,
+                  child: Image.asset(icGoogle, fit: BoxFit.fill),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 50,
+              child: Card(
+                color: AppColor.lightGreen,
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: const BorderSide(width: 0.2, color: AppColor.green),
+                ),
+                child: Padding(
+                  padding: commonPaddingAll5,
+                  child: Image.asset(icApple, fit: BoxFit.fill),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 50,
+              child: Card(
+                color: AppColor.lightGreen,
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: const BorderSide(width: 0.2, color: AppColor.green),
+                ),
+                child: Padding(
+                  padding: commonPaddingAll5,
+                  child: Image.asset(icAnon, fit: BoxFit.cover),
+                ),
+              ),
+            ),
+
+          ],
         ),
         dividerSH(),
         RichText(
@@ -115,7 +216,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                       color: AppColor.lightBlue, fontWeight: FontWeight.bold),
                 )
               ]),
-        )
+        ),
+        dividerSH(),
       ],
     );
   }

@@ -36,10 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            appTextView(name: user!.email.toString(), isBold: true),
             appTextView(
-              name: user!.uid.toString(),
-            ),
+                name: user!.email.toString(),
+                isBold: true,
+                color: AppColor.white),
+            appTextView(name: user!.uid.toString(), color: AppColor.white),
           ],
         ),
       ),
