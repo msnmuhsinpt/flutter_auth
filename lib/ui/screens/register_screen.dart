@@ -7,6 +7,7 @@ import '../../utils/app_color.dart';
 import '../../utils/constant.dart';
 import '../widget/common/app_text_view.dart';
 import '../widget/common/common_widget.dart';
+import '../widget/common/snack_bar.dart';
 
 class SignUpWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -20,16 +21,36 @@ class SignUpWidget extends StatefulWidget {
 class _SignUpWidgetState extends State<SignUpWidget> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController conformPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          registerUi(),
-        ],
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(icBg), fit: BoxFit.cover),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 180,
+              height: screenHeight(context) - 180,
+              width: screenWidth(context),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColor.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: registerUi(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -43,17 +64,19 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            appTextView(name: "Register", isBold: true, size: 20),
-            const SizedBox(
-              height: 50,
-            ),
+            appTextView(
+                name: "Register",
+                isBold: true,
+                size: 30,
+                color: AppColor.green),
+            dividerH(),
             TextFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: AppColor.white,
+                fillColor: AppColor.lightGreen,
                 //don't show limit
                 labelText: 'Email',
                 labelStyle: const TextStyle(fontSize: 15, color: Colors.black),
@@ -61,11 +84,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 contentPadding: const EdgeInsets.all(10),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(width: 1, color: AppColor.hash),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(width: 1, color: AppColor.hash),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
                 ),
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -81,7 +106,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: AppColor.white,
+                fillColor: AppColor.lightGreen,
                 //don't show limit
                 labelText: 'Password',
                 labelStyle: const TextStyle(fontSize: 15, color: Colors.black),
@@ -89,11 +114,42 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 contentPadding: const EdgeInsets.all(10),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(width: 1, color: AppColor.hash),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(width: 1, color: AppColor.hash),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
+                ),
+              ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) => value != null && value.length < 6
+                  ? 'Enter min 6 character'
+                  : null,
+            ),
+            dividerSH(),
+            TextFormField(
+              controller: conformPasswordController,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColor.lightGreen,
+                //don't show limit
+                labelText: 'Password',
+                labelStyle: const TextStyle(fontSize: 15, color: Colors.black),
+                // hintText: hintText,
+                contentPadding: const EdgeInsets.all(10),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide:
+                      const BorderSide(width: 0.2, color: AppColor.green),
                 ),
               ),
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -104,9 +160,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             dividerSH(),
             SizedBox(
               width: screenWidth(context) - 20,
-              height: 50,
+              height: 40,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                  primary: AppColor.green,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -117,12 +174,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     color: AppColor.white,
                     size: 16),
                 onPressed: () {
-                  validate();
-                    AuthService().register(
-                    emailController.text.toString(),
-                    passwordController.text.toString(),
-                      context
-                  );
+                  if (passwordController == conformPasswordController) {
+                    validate();
+                    AuthService().register(emailController.text.toString(),
+                        passwordController.text.toString(), context);
+                  } else {
+                    Utils.showSnackBar('This password not same');
+                  }
                 },
               ),
             ),

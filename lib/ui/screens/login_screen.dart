@@ -1,7 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
 import 'package:flutter_auth/ui/screens/forgot_screen.dart';
+import 'package:flutter_auth/ui/screens/register_screen.dart';
 import 'package:flutter_auth/ui/widget/common/app_text_field.dart';
 import 'package:flutter_auth/ui/widget/common/app_text_view.dart';
 import 'package:flutter_auth/ui/widget/common/common_widget.dart';
@@ -185,37 +185,44 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             SizedBox(
               width: 50,
-              child: Card(
-                color: AppColor.lightGreen,
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: const BorderSide(width: 0.2, color: AppColor.green),
+              child: InkWell(
+                child: Card(
+                  color: AppColor.lightGreen,
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: const BorderSide(width: 0.2, color: AppColor.green),
+                  ),
+                  child: Padding(
+                    padding: commonPaddingAll5,
+                    child: Image.asset(icAnon, fit: BoxFit.cover),
+                  ),
                 ),
-                child: Padding(
-                  padding: commonPaddingAll5,
-                  child: Image.asset(icAnon, fit: BoxFit.cover),
-                ),
+                onTap: () {
+                  AuthService().signInAnon(context);
+                },
               ),
             ),
-
           ],
         ),
         dividerSH(),
-        RichText(
-          text: TextSpan(
-              text: 'Don' 't have an account?  ',
-              style: const TextStyle(color: AppColor.black),
-              children: [
-                TextSpan(
-                  //multiple tap
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = widget.onClickedSignUp,
-                  text: 'Sign Up',
-                  style: const TextStyle(
-                      color: AppColor.lightBlue, fontWeight: FontWeight.bold),
-                )
-              ]),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            appTextView(name: 'Dont have an account?', isBold: true),
+            TextButton(
+              child: appTextView(
+                  name: 'Sign Up', isBold: true, color: AppColor.green),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpWidget(widget.onClickedSignUp),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         dividerSH(),
       ],

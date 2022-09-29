@@ -77,61 +77,37 @@ class AuthService {
     //navigator not working
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
-/*  //create user object firebase
-
-  UserList? _userFromFirebase(User user) {
-    return user.isAnonymous ? UserList(user.uid) : null;
-  }
-
-  //auth change  user stream
-
-  Stream<UserList?>? get user {
-    try {
-      return _auth
-          .authStateChanges()
-          .map((User? user) => _userFromFirebase(user!));
-    } catch (e) {
-      print(e.toString());
-    }
-    return null;
-  }
 
   //signIn anon
 
-  Future signInAnon() async {
+  Future signInAnon(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     try {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return _userFromFirebase(user!);
-    } catch (e) {
+      await _auth.signInAnonymously();
+    } on FirebaseAuthException catch (e) {
       print(e.toString());
-      return null;
+      Utils.showSnackBar(e.message);
+    }
+    //navigator not working
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  //sent email verification
+
+  Future sentEmailVerification() async {
+    try {
+      final user = _auth.currentUser!;
+      await user.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      Utils.showSnackBar(e.toString());
     }
   }
 
-  // regiter
 
-  Future signInWithEmailAndPassword(
-      String name, String email, String password) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email.trim(), password: password);
-      User? user = result.user;
-      return _userFromFirebase(user!);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
-  // sign Out
-
-  Future userSignOut() async {
-    try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }*/
 }
