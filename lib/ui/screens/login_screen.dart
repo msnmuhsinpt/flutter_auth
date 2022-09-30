@@ -40,15 +40,14 @@ class _LoginWidgetState extends State<LoginWidget> {
         child: Stack(
           children: [
             Positioned(
-              top: 180,
-              height: screenHeight(context) - 180,
+              top: 150,
+              height: screenHeight(context) - 100,
               width: screenWidth(context),
               child: Container(
                 decoration: const BoxDecoration(
                   color: AppColor.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: Padding(
@@ -79,7 +78,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             color: AppColor.green,
             size: 15,
             isBold: true),
-        dividerH(),
+        dividerSH(),
         AppTextField(
           controller: emailController,
           hintText: 'Email',
@@ -107,7 +106,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
               );
             },
-            child: appTextView(name: 'Forgot Password', color: AppColor.green),
+            child: appTextView(
+                name: 'Forgot Password', color: AppColor.green, size: 12),
           ),
         ),
         SizedBox(
@@ -134,7 +134,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: Container(
               margin: const EdgeInsets.only(right: 10, left: 25),
               child: const Divider(
-                thickness: 0.2,
+                thickness: 0.5,
                 color: AppColor.black,
               ),
             ),
@@ -144,7 +144,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: Container(
                 margin: const EdgeInsets.only(right: 25, left: 10),
                 child: const Divider(
-                  thickness: 0.2,
+                  thickness: 0.5,
                   color: AppColor.black,
                 )),
           ),
@@ -154,22 +154,25 @@ class _LoginWidgetState extends State<LoginWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(
-              width: 50,
-              child: Card(
-                color: AppColor.lightGreen,
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: const BorderSide(width: 0.2, color: AppColor.green),
+              width: 60,
+              child: InkWell(
+                child: Card(
+                  color: AppColor.lightGreen,
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: const BorderSide(width: 0.2, color: AppColor.green),
+                  ),
+                  child: Padding(
+                    padding: commonPaddingAll5,
+                    child: Image.asset(icGoogle, fit: BoxFit.fill),
+                  ),
                 ),
-                child: Padding(
-                  padding: commonPaddingAll5,
-                  child: Image.asset(icGoogle, fit: BoxFit.fill),
-                ),
+                onTap: () => AuthService().signInWithGoogle(context: context),
               ),
             ),
             SizedBox(
-              width: 50,
+              width: 60,
               child: Card(
                 color: AppColor.lightGreen,
                 elevation: 8,
@@ -184,7 +187,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
             ),
             SizedBox(
-              width: 50,
+              width: 60,
               child: InkWell(
                 child: Card(
                   color: AppColor.lightGreen,
@@ -205,11 +208,10 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ],
         ),
-        dividerSH(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            appTextView(name: 'Dont have an account?', isBold: true),
+            appTextView(name: "Don't have an account?", isBold: true),
             TextButton(
               child: appTextView(
                   name: 'Sign Up', isBold: true, color: AppColor.green),
@@ -224,7 +226,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
           ],
         ),
-        dividerSH(),
+        dividerH(),
       ],
     );
   }

@@ -23,7 +23,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: appTextView(
             name: name, color: AppColor.white, isBold: true, size: 18),
         leading: Container(),
-        backgroundColor: AppColor.lightRed,
+        backgroundColor: AppColor.green,
         elevation: 0,
       ),
     );

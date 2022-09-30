@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/service/auth.dart';
+import 'package:flutter_auth/ui/screens/login_screen.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/constant.dart';
@@ -27,6 +27,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -43,7 +44,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   color: AppColor.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: registerUi(),
@@ -103,7 +103,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             TextFormField(
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
-              textInputAction: TextInputAction.done,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColor.lightGreen,
@@ -137,7 +137,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 filled: true,
                 fillColor: AppColor.lightGreen,
                 //don't show limit
-                labelText: 'Password',
+                labelText: 'Conform Password',
                 labelStyle: const TextStyle(fontSize: 15, color: Colors.black),
                 // hintText: hintText,
                 contentPadding: const EdgeInsets.all(10),
@@ -157,7 +157,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ? 'Enter min 6 character'
                   : null,
             ),
-            dividerSH(),
+            dividerH(),
             SizedBox(
               width: screenWidth(context) - 20,
               height: 40,
@@ -174,7 +174,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     color: AppColor.white,
                     size: 16),
                 onPressed: () {
-                  if (passwordController == conformPasswordController) {
+                  if (passwordController.text.toString() ==
+                      conformPasswordController.text.toString()) {
                     validate();
                     AuthService().register(emailController.text.toString(),
                         passwordController.text.toString(), context);
@@ -185,20 +186,24 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ),
             ),
             dividerSH(),
-            RichText(
-              text: TextSpan(
-                  text: 'I have an account ?  ',
-                  style: const TextStyle(color: AppColor.black),
-                  children: [
-                    TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = widget.onClickedSignUp,
-                      text: 'Login',
-                      style: const TextStyle(
-                          color: AppColor.lightBlue,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                appTextView(name: 'I have an account?', isBold: true),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            LoginWidget(widget.onClickedSignUp),
+                      ),
+                    );
+                  },
+                  child: appTextView(
+                      name: 'Login', isBold: true, color: AppColor.green),
+                ),
+              ],
             ),
           ],
         ),

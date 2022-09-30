@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 appTextView(name: 'Sign Out', size: 16, color: AppColor.white),
           ),
         ],
-        backgroundColor: AppColor.lightRed,
+        backgroundColor: AppColor.green,
       ),
       body: Center(
         child: Column(
@@ -39,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
             appTextView(
                 name: user!.email.toString(),
                 isBold: true,
-                color: AppColor.white),
-            appTextView(name: user!.uid.toString(), color: AppColor.white),
+                color: AppColor.black),
+            appTextView(name: user!.uid.toString(), color: AppColor.black),
           ],
         ),
       ),
